@@ -1,0 +1,15 @@
+<% include ./partials/header.ejs %>
+    <% posts.forEach(post=>{ %>
+        <div class="post-container">
+            <div class="post-image">
+                <img src="<%=post.image%>" alt="image">
+            </div>
+            <div class="post-descriptions">
+                <div><a href="/<%=post._id%>"><%=post.title%></a></div>
+                <div><%=post.text%></div>
+                <div>submitted <%=moment(post.date).fromNow()%> by</div>
+            </div>
+        </div>
+    <%})%>
+<% include ./partials/footer.ejs %>
+
