@@ -31,7 +31,7 @@ router.post('/',(req,res)=>{
 
 // SHOW ROUTE
 router.get('/:id',(req,res)=>{
-    Post.findById(req.params.id,(err,showPost)=>{
+    Post.findById(req.params.id).populate('comments').exec((err,showPost)=>{
         err ? console.log(err):res.render("posts/show", {post:showPost})
     })
 })

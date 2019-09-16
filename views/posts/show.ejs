@@ -2,4 +2,16 @@
     <div><%=post.title%></div>
     <div><%=post.date%></div>
 
+    <form method="POST" action="/<%= post._id %>/comments">
+        <input type="text" name="comment[user]">
+        <textarea name="comment[comment]"></textarea>
+        <input type="submit" name="submit" id="submit" value="submit">
+    </form>
+    <div>
+        <% post.comments.forEach(comment=>{ %>
+            <div><%=comment.user%></div>
+            <div><%=comment.comment%></div>
+        <% }) %>
+    </div>
+
 <% include ../partials/footer.ejs %>

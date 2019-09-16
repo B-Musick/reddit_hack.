@@ -5,6 +5,8 @@ let express  = require('express'),
     bodyParser = require('body-parser')
     moment = require('moment');
 
+let seedDB = require('./seed.js');
+
 app.set('view engine', 'ejs'); // Dont have to add .ejs to files
 // Another type of encoding is multipart/form-data used to upload binary files
 // We will use urlencoded
@@ -15,15 +17,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // ROUTES
 let indexRoutes = require('./routes/index');
+var commentRoutes = require('./routes/comments');
+
 
 app.use('/', indexRoutes);
+app.use('/', commentRoutes);
 
 // SERVE STATIC ASSETS
 app.use(express.static(__dirname+'/public'));
 
 // MODELS
 let Post = require('./models/post');
+let Comment = require('./models/comment');
 
+// seedDB();
 // TEST THE DATABASE
 // Post.create({
 //     title: 'TestPost',
