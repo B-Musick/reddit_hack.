@@ -1,7 +1,14 @@
 let mongoose = require('mongoose');
 
 let commentSchema = new mongoose.Schema({
-    user: String,
+    user: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User' // Refers to the model
+        },
+        username: String
+    }, 
+
     comment: String,
     date: {type: Date, default: Date.now}
 });

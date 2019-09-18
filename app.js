@@ -2,10 +2,41 @@ let express  = require('express'),
     app      = express(),
 
     mongoose = require('mongoose'),
-    bodyParser = require('body-parser')
-    moment = require('moment');
+    bodyParser = require('body-parser'),
+    moment = require('moment'), 
+    passport = require('passport'),
+    LocalStrategy = require('passport-local');
+    
+;
 
 let seedDB = require('./seed.js');
+
+// ROUTES
+let indexRoutes = require('./routes/index');
+var commentRoutes = require('./routes/comments');
+
+// MODELS
+let Post = require('./models/post');
+let Comment = require('./models/comment');
+let User = require('./models/user');
+
+// METHOD-OVERRIDE
+var methodOverride = require('method-override');
+
+
+/************************PASSPORT CONFIGURATION ***************************/
+app.use(require('express-session')({
+    secret: 'You are the coolest',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.set('view engine', 'ejs'); // Dont have to add .ejs to files
 // Another type of encoding is multipart/form-data used to upload binary files
@@ -15,9 +46,12 @@ app.set('view engine', 'ejs'); // Dont have to add .ejs to files
 // Make sure it is the first above all other app.use methods, otherwise it wont allow creation of schema
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// ROUTES
-let indexRoutes = require('./routes/index');
-var commentRoutes = require('./routes/comments');
+
+// PASS USER TO EVERY PAGE
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    next(); // This moves to the next middleware route
+});
 
 
 app.use('/', indexRoutes);
@@ -26,9 +60,6 @@ app.use('/', commentRoutes);
 // SERVE STATIC ASSETS
 app.use(express.static(__dirname+'/public'));
 
-// MODELS
-let Post = require('./models/post');
-let Comment = require('./models/comment');
 
 // seedDB();
 // TEST THE DATABASE

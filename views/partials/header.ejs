@@ -13,12 +13,62 @@
 </head>
 <body>
     <div>
-        <nav id="navbar">
-            <div id="reddit-icon">
-                <i class="fab fa-reddit"></i>
-            </div>
-            <div id="reddit-banner">
-                <span>reddit_hack.</span>
-            </div>
-        </nav>
+        <% if(!currentUser){ %>
+            <nav id="navbar">
+                <div id="reddit-icon">
+                    <i class="fab fa-reddit"></i>
+                </div>
+                <div id="reddit-banner">
+                    <span>reddit_hack.</span>
+                </div>
+                <div>
+                    <button id="sign-up-button">SIGN UP</button>
+                    <button id="login-button">LOGIN</button>
+            
+                </div>
+            </nav>
+        <% }else{ %>
+            <nav id="navbar">
+                <div id="reddit-icon">
+                    <i class="fab fa-reddit"></i>
+                </div>
+                <div id="reddit-banner">
+                    <span>reddit_hack.</span>
+                </div>
+                <div>
+                    <%= currentUser.username %>
+                    <a href="/logout">Logout</a>
+            
+                </div>
+            </nav>
+            
+            
+        <% } %>
+
+
     </div>
+
+    <!-- Form so when user clicks the sign up button, the script will turn on this
+    form over any page -->
+    <div id="sign-up-form" class="sign-up-form-no-display">
+        <form action="/register" method="POST">
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="password">
+            <button>Submit</button>
+        </form>
+    </div>
+
+    <div id="login-form" class="login-form-no-display">
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="password">
+            <button>Submit</button>
+        </form>
+    </div>
+
+    <script src='/scripts/header.js'>
+    </script>
+    
+
+    
+    

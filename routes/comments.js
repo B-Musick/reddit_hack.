@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 var Post = require('../models/post');
 var Comment = require('../models/comment');
+var middleware = require('../middleware');
 
-router.post('/:id/comments',  (req, res) => {
+router.post('/:id/comments', middleware.isLoggedIn,  (req, res) => {
     Post.findById(req.params.id, (err, post) => {
         if (err) {
             console.log("Err post: " + err);
@@ -15,8 +16,8 @@ router.post('/:id/comments',  (req, res) => {
                     console.log(err);
                 } else {
 
-                    // comment.author.id = req.user._id;
-                    // comment.author.username = req.user.username;
+                    comment.user.id = req.user._id;
+                    comment.user.username = req.user.username;
                     comment.save();
                     post.comments.push(comment);
 

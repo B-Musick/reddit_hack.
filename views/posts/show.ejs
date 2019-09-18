@@ -2,14 +2,20 @@
     <div><%=post.title%></div>
     <div><%=post.date%></div>
 
-    <form method="POST" action="/<%= post._id %>/comments">
-        <input type="text" name="comment[user]">
-        <textarea name="comment[comment]"></textarea>
-        <input type="submit" name="submit" id="submit" value="submit">
-    </form>
+    <% if(!currentUser){ %>
+        <div>
+            <p>What are your thoughts? Log in or Sign up</p>
+        </div>
+    <% }else{ %>
+        <form method="POST" action="/<%= post._id %>/comments">
+            <textarea name="comment[comment]"></textarea>
+            <input type="submit" name="submit" id="submit" value="submit">
+        </form>
+    <%} %>
+
     <div>
         <% post.comments.forEach(comment=>{ %>
-            <div><%=comment.user%></div>
+            <div><%=comment.user.username%></div>
             <div><%=comment.comment%></div>
         <% }) %>
     </div>

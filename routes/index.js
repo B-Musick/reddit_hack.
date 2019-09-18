@@ -1,12 +1,13 @@
 let express = require('express')
-    router  = express.Router();
+router = express.Router(), passport = require('passport');
 
+let User = require('../models/user');
 let Post = require('../models/post');
 
 router.get('/', (req, res) => {
     Post.find({}, (err, foundPosts) => {
         // Return the posts from the database {} of the Post schema type
-        err ? console.log(err) : res.render('index', { posts: foundPosts })
+        err ? console.log(err) : res.render('index', { posts: foundPosts, currentUser: req.user })
     })
 });
 
@@ -35,5 +36,39 @@ router.get('/:id',(req,res)=>{
         err ? console.log(err):res.render("posts/show", {post:showPost})
     })
 })
+
+// REGISTER ROUTES
+
+// Register post route
+router.post('/register', (req, res) => {
+    var newUser = new User({ username: req.body.username });
+
+    User.register(newUser, req.body.password, (err, user) => {
+        if (err) {
+            console.log(user);
+            return res.render('index');
+        } else {
+            passport.authenticate('local')(req, res, () => res.redirect('/'));
+        }
+    })
+})
+
+// LOGIN POST ROUTE
+
+
+router.post('/login', passport.authenticate('local',
+    {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }
+), (req, res) => { });
+
+// LOGOUT ROUTE
+router.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+
+});
+
 
 module.exports = router;
