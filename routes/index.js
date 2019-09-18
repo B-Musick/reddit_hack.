@@ -11,6 +11,14 @@ router.get('/', (req, res) => {
     })
 });
 
+// LOGOUT ROUTE
+router.get('/logout', function (req, res) {
+    req.logout();
+    // req.session.destroy();
+    res.redirect('/');
+
+
+});
 /************************** POST ROUTES ************************************** */
 
 // NEW ROUTE
@@ -63,12 +71,7 @@ router.post('/login', passport.authenticate('local',
     }
 ), (req, res) => { });
 
-// LOGOUT ROUTE
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
 
-});
 
 
 module.exports = router;

@@ -16,3 +16,6 @@ ERRORS
 3. Error: passport.initialize() middleware not in use
 - https://stackoverflow.com/questions/16781294/passport-js-passport-initialize-middleware-not-in-use
 - Things may be out of order in app.ejs file
+
+4. Was getting cast error ''Cast to ObjectId failed for value "logout" at path "_id" for model "Post"',
+- https://stackoverflow.com/questions/52946792/passport-logout-error-cast-to-objectid-failed-for-value-logout-at-path-id

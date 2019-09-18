@@ -5,7 +5,8 @@ let express  = require('express'),
     bodyParser = require('body-parser'),
     moment = require('moment'), 
     passport = require('passport'),
-    LocalStrategy = require('passport-local');
+    LocalStrategy = require('passport-local'),
+    passportLocalMongoose = require('passport-local-mongoose');
     
 ;
 
@@ -16,9 +17,10 @@ let indexRoutes = require('./routes/index');
 var commentRoutes = require('./routes/comments');
 
 // MODELS
+let User = require('./models/user');
 let Post = require('./models/post');
 let Comment = require('./models/comment');
-let User = require('./models/user');
+
 
 // METHOD-OVERRIDE
 var methodOverride = require('method-override');
@@ -28,13 +30,15 @@ var methodOverride = require('method-override');
 app.use(require('express-session')({
     secret: 'You are the coolest',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 } // this is the key
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
+// https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
